@@ -5,6 +5,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Configure for subdomain deployment
+  assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
   experimental: {
     turbo: {
       rules: {
