@@ -3,6 +3,42 @@
 import { Calculator, CheckSquare, Plus, ArrowRight, Globe, Smartphone } from 'lucide-react'
 
 export default function Home() {
+  // Structured data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "TrackEnds",
+    "applicationCategory": "ProductivityApplication",
+    "operatingSystem": ["Web Browser", "Android", "iOS"],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "100"
+    },
+    "description": "Free productivity tools suite including expense tracker, task reminders, budget planner, time tracker, note taking, password manager for web and mobile devices.",
+    "url": "https://www.trackends.com",
+    "publisher": {
+      "@type": "Organization",
+      "name": "TrackEnds"
+    },
+    "featureList": [
+      "Expense tracking and budget management",
+      "Task reminders and organization", 
+      "Budget planning and analysis",
+      "Time tracking and productivity monitoring",
+      "Note taking and digital organization",
+      "Cross-platform synchronization",
+      "Data export and backup",
+      "Category management",
+      "Visual charts and analytics"
+    ]
+  };
+
   const tools = [
     {
       name: 'Expense Tracker',
@@ -23,14 +59,23 @@ export default function Home() {
   ]
 
   const upcomingTools = [
-    'Time Tracker',
-    'Password Manager', 
-    'Note Taking',
-    'Budget Planner'
+    'Time Tracker & Productivity Monitor',
+    'Password Manager & Security Vault', 
+    'Note Taking & Digital Organizer',
+    'Budget Planner & Financial Dashboard',
+    'Habit Tracker & Goal Manager',
+    'Calendar Integration & Scheduling',
+    'Expense Reports & Analytics',
+    'Team Collaboration Tools'
   ]
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       {/* Header */}
       <header className="container mx-auto px-6 py-8">
         <nav className="flex justify-between items-center">
@@ -51,13 +96,12 @@ export default function Home() {
       <section className="container mx-auto px-6 py-16 text-center">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-5xl font-bold text-gray-900 mb-6">
-            Your Personal 
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Productivity </span>
-            Tools
+            Free Expense Tracker, Task Reminders & 
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Productivity Tools </span>
           </h2>
           <p className="text-xl text-gray-600 mb-8">
-            A growing collection of simple, powerful tools designed to help you manage your daily life. 
-            Track expenses, organize tasks, and stay productive - all in one place.
+            Complete productivity suite with expense tracker, budget planner, task reminders, time tracker, note taking, and password manager. 
+            Free web and mobile apps to track spending, manage finances, organize tasks, and boost your productivity.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 

@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.trackends.com/sitemap.xml
+
+# Allow crawling of main pages
+Allow: /
+Allow: /tools
+Allow: /about
+
+# Crawl delay (optional)
+Crawl-delay: 1
