@@ -1,4 +1,4 @@
-# Tools Collection
+# TrackEnds Tools Collection
 
 This repository contains multiple mobile and web applications built with Next.js and Capacitor for cross-platform deployment.
 
