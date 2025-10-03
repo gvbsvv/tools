@@ -13,7 +13,7 @@ A comprehensive expense tracking application with data visualization and analyti
 - Visual charts and statistics
 - Cross-platform (Web, Android, iOS)
 
-**Live Demo:** [expense.trackatask.com](https://expense.trackatask.com) *(coming soon)*
+**Live Demo:** [expenses.trackends.com](https://expenses.trackends.com) *(coming soon)*
 
 ### 2. Task Management App
 A productivity-focused task management application with organizational features.
@@ -24,7 +24,7 @@ A productivity-focused task management application with organizational features.
 - Task statistics and progress tracking
 - Cross-platform (Web, Android, iOS)
 
-**Live Demo:** [tasks.trackatask.com](https://tasks.trackatask.com) *(coming soon)*
+**Live Demo:** [remind.trackends.com](https://remind.trackends.com) *(coming soon)*
 
 ## Tech Stack
 
@@ -129,8 +129,8 @@ This builds the web assets and copies them to the native mobile projects.
 ### Web Deployment (Cloudflare Pages)
 Both applications are configured for static export and deployed to Cloudflare Pages:
 
-- **Expense Tracker:** `expense.trackatask.com`
-- **Task Management:** `tasks.trackatask.com`
+- **Expense Tracker:** `expenses.trackends.com`
+- **Task Management:** `remind.trackends.com`
 
 ### Mobile Deployment
 - **Android:** Build APK/AAB through Android Studio
@@ -151,4 +151,4 @@ This project is licensed under the MIT License.
 ## Contact
 
 - GitHub: [@gvbsvv](https://github.com/gvbsvv)
-- Website: [trackatask.com](https://trackatask.com)
+- Website: [trackends.com](https://trackends.com)
