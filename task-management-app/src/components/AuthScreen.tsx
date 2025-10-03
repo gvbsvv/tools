@@ -105,7 +105,7 @@ export function AuthScreen({ onAuthenticated }: AuthProps) {
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
+                Enter something to track
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -114,7 +114,7 @@ export function AuthScreen({ onAuthenticated }: AuthProps) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="Enter your email"
+                  placeholder="remember entry"
                 />
               </div>
             </div>
