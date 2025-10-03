@@ -125,7 +125,7 @@ export function AuthScreen({ onAuthenticated }: AuthProps) {
               disabled={loading}
               className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50"
             >
-              {loading ? 'Sending...' : 'Send OTP'}
+              {loading ? 'Generating...' : 'Generate OTP'}
             </button>
           </div>
         ) : (
@@ -173,9 +173,7 @@ export function AuthScreen({ onAuthenticated }: AuthProps) {
         )}
 
         <div className="mt-8 text-center">
-          <p className="text-xs text-gray-500">
-            Secure authentication with email verification
-          </p>
+          {/* Removed secure authentication message */}
         </div>
       </div>
     </div>
