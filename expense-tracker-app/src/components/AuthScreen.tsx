@@ -98,7 +98,7 @@ export function AuthScreen({ onAuthenticated }: AuthProps) {
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Expense Tracker</h1>
           <p className="text-gray-600">
-            {step === 'email' ? 'Enter your email to get started' : 'Enter the OTP sent to your email'}
+            {step === 'email' ? 'Enter something which you remember to track the entered expense' : 'Enter the OTP sent to your email'}
           </p>
         </div>
 
