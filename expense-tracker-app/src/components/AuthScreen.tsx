@@ -34,8 +34,8 @@ export function AuthScreen({ onAuthenticated }: AuthProps) {
   }
 
   const sendOTP = async () => {
-    if (!email || !isValidEmail(email)) {
-      alert('Please enter a valid email address')
+    if (!email || email.trim().length === 0) {
+      alert('Please enter something to remember')
       return
     }
 
@@ -79,9 +79,7 @@ export function AuthScreen({ onAuthenticated }: AuthProps) {
     onAuthenticated(email)
   }
 
-  const isValidEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-  }
+  // Removed email validation - now accepts any memorable text
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
