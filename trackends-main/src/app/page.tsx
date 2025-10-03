@@ -186,6 +186,97 @@ export default function Home() {
         </div>
       </section>
 
+      {/* About Section */}
+      <section id="about" className="bg-gradient-to-r from-blue-50 to-purple-50 py-16">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <h3 className="text-3xl font-bold text-gray-900 mb-8">About TrackEnds</h3>
+            <div className="grid md:grid-cols-2 gap-12 items-center mb-12">
+              <div className="text-left">
+                <h4 className="text-2xl font-semibold text-gray-900 mb-4">Our Mission</h4>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  TrackEnds was born from a simple belief: productivity tools should be simple, accessible, and effective. 
+                  We create free, cross-platform applications that help people manage their finances, organize their tasks, 
+                  and stay productive without the complexity of enterprise software.
+                </p>
+                <p className="text-gray-600 leading-relaxed">
+                  Every tool we build focuses on the essentials—no bloated features, no confusing interfaces, 
+                  just clean, intuitive apps that get the job done. Whether you're tracking expenses, managing tasks, 
+                  or planning your budget, TrackEnds provides the tools you need to stay organized and in control.
+                </p>
+              </div>
+              <div className="bg-white rounded-xl shadow-lg p-8">
+                <div className="space-y-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="bg-blue-100 p-3 rounded-lg">
+                      <Globe className="text-blue-600" size={24} />
+                    </div>
+                    <div>
+                      <h5 className="font-semibold text-gray-900">Global Access</h5>
+                      <p className="text-sm text-gray-600">Available worldwide on web and mobile</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <div className="bg-green-100 p-3 rounded-lg">
+                      <CheckSquare className="text-green-600" size={24} />
+                    </div>
+                    <div>
+                      <h5 className="font-semibold text-gray-900">Always Free</h5>
+                      <p className="text-sm text-gray-600">Core features remain free forever</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <div className="bg-purple-100 p-3 rounded-lg">
+                      <Plus className="text-purple-600" size={24} />
+                    </div>
+                    <div>
+                      <h5 className="font-semibold text-gray-900">Privacy First</h5>
+                      <p className="text-sm text-gray-600">Your data stays on your device</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-xl shadow-lg p-8 mb-12">
+              <h4 className="text-xl font-semibold text-gray-900 mb-6">Why We Built TrackEnds</h4>
+              <div className="grid md:grid-cols-3 gap-6 text-left">
+                <div>
+                  <h5 className="font-semibold text-gray-900 mb-2">Simplicity Over Complexity</h5>
+                  <p className="text-sm text-gray-600">
+                    Most productivity tools are overengineered. We believe in doing fewer things, but doing them exceptionally well.
+                  </p>
+                </div>
+                <div>
+                  <h5 className="font-semibold text-gray-900 mb-2">Privacy by Design</h5>
+                  <p className="text-sm text-gray-600">
+                    Your personal data shouldn't be a product. Our tools work offline-first and keep your information private.
+                  </p>
+                </div>
+                <div>
+                  <h5 className="font-semibold text-gray-900 mb-2">Universal Access</h5>
+                  <p className="text-sm text-gray-600">
+                    Great tools should be available to everyone, regardless of budget or device. That's why we're committed to keeping TrackEnds free.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center">
+              <h4 className="text-xl font-semibold text-gray-900 mb-4">The Road Ahead</h4>
+              <p className="text-gray-600 max-w-3xl mx-auto mb-6">
+                We're constantly working on new tools and features based on user feedback. Our roadmap includes advanced 
+                analytics, team collaboration features, and integrations with popular services—all while maintaining 
+                our core principles of simplicity and privacy.
+              </p>
+              <p className="text-gray-600 font-medium">
+                Join thousands of users who trust TrackEnds to keep their digital life organized.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section className="bg-white py-16">
         <div className="container mx-auto px-6">
@@ -228,13 +319,19 @@ export default function Home() {
               </div>
               <span className="text-lg font-semibold">TrackEnds</span>
             </div>
-            <div className="flex space-x-6">
-              <a href="https://expenses.trackends.com" className="text-gray-300 hover:text-white transition-colors">Expenses</a>
-              <a href="https://remind.trackends.com" className="text-gray-300 hover:text-white transition-colors">Reminders</a>
+            <div className="flex flex-wrap gap-6">
+              <a href="#about" className="text-gray-300 hover:text-white transition-colors">About</a>
+              <a href="#tools" className="text-gray-300 hover:text-white transition-colors">Tools</a>
+              <a href="https://expenses.trackends.com" className="text-gray-300 hover:text-white transition-colors">Expense Tracker</a>
+              <a href="https://remind.trackends.com" className="text-gray-300 hover:text-white transition-colors">Task Reminders</a>
             </div>
           </div>
           <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 TrackEnds. Simple tools for productive life.</p>
+            <p className="mb-2">&copy; 2025 TrackEnds. Simple tools for productive life.</p>
+            <p className="text-sm">
+              Free expense tracker, task reminders, budget planner & productivity tools. 
+              Available on web, Android & iOS.
+            </p>
           </div>
         </div>
       </footer>
