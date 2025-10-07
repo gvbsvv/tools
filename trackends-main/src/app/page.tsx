@@ -1,6 +1,6 @@
 'use client'
 
-import { Calculator, CheckSquare, Plus, ArrowRight, Globe, Smartphone } from 'lucide-react'
+import { Calculator, CheckSquare, Plus, ArrowRight, Globe, Smartphone, GraduationCap } from 'lucide-react'
 
 export default function Home() {
   // Structured data for SEO
@@ -20,7 +20,7 @@ export default function Home() {
       "ratingValue": "4.8",
       "ratingCount": "100"
     },
-    "description": "Free productivity tools suite including expense tracker, task reminders, budget planner, time tracker, note taking, password manager for web and mobile devices.",
+    "description": "Free productivity tools suite including expense tracker, task reminders, tutor scheduler, budget planner, time tracker, note taking, password manager for web and mobile devices.",
     "url": "https://www.trackends.com",
     "publisher": {
       "@type": "Organization",
@@ -28,7 +28,8 @@ export default function Home() {
     },
     "featureList": [
       "Expense tracking and budget management",
-      "Task reminders and organization", 
+      "Task reminders and organization",
+      "Tutor scheduling and payment management", 
       "Budget planning and analysis",
       "Time tracking and productivity monitoring",
       "Note taking and digital organization",
@@ -55,6 +56,14 @@ export default function Home() {
       icon: CheckSquare,
       color: 'from-green-500 to-green-600',
       features: ['Smart Categories', 'Progress Tracking', 'Quick Actions']
+    },
+    {
+      name: 'Tutor Scheduler',
+      description: 'Comprehensive tutoring management with scheduling, payments & reminders',
+      url: 'https://tutor.trackends.com',
+      icon: GraduationCap,
+      color: 'from-purple-500 to-purple-600',
+      features: ['Class Scheduling', 'Payment Tracking', 'Student Management']
     }
   ]
 
@@ -64,7 +73,7 @@ export default function Home() {
     'Note Taking & Digital Organizer',
     'Budget Planner & Financial Dashboard',
     'Habit Tracker & Goal Manager',
-    'Calendar Integration & Scheduling',
+    'Invoice Generator & Billing System',
     'Expense Reports & Analytics',
     'Team Collaboration Tools'
   ]
@@ -96,12 +105,12 @@ export default function Home() {
       <section className="container mx-auto px-6 py-16 text-center">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-5xl font-bold text-gray-900 mb-6">
-            Free Expense Tracker, Task Reminders & 
+            Free Expense Tracker, Task Reminders, Tutor Scheduler & 
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Productivity Tools </span>
           </h2>
           <p className="text-xl text-gray-600 mb-8">
-            Complete productivity suite with expense tracker, budget planner, task reminders, time tracker, note taking, and password manager. 
-            Free web and mobile apps to track spending, manage finances, organize tasks, and boost your productivity.
+            Complete productivity suite with expense tracker, task reminders, tutor scheduler, budget planner, time tracker, note taking, and password manager. 
+            Free web and mobile apps to track spending, manage tasks, schedule tutoring sessions, and boost your productivity.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
