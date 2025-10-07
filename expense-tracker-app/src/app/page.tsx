@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, FileText } from 'lucide-react'
 import { ExpenseForm } from '@/components/ExpenseForm'
 import { ExpenseList } from '@/components/ExpenseList'
 import { ExpenseChart } from '@/components/ExpenseChart'
@@ -9,6 +9,7 @@ import { ExpenseStats } from '@/components/ExpenseStats'
 import { AuthScreen } from '@/components/AuthScreen'
 import { SessionManager } from '@/components/SessionManager'
 import { DataDebugger } from '@/components/DataDebugger'
+import { ClaimsManager } from '@/components/ClaimsManager'
 import { CapacitorStorage } from '@/utils/storage'
 import { Preferences } from '@capacitor/preferences'
 
@@ -18,6 +19,13 @@ export interface Expense {
   amount: number
   category: string
   date: string
+  claimable?: boolean
+  claimStatus?: 'claimable' | 'submitted' | 'under_review' | 'approved' | 'paid' | 'rejected'
+  claimSubmittedDate?: string
+  claimApprovedDate?: string
+  claimPaidDate?: string
+  claimRejectedReason?: string
+  claimNotes?: string
 }
 
 export default function Home() {
@@ -27,6 +35,7 @@ export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [userEmail, setUserEmail] = useState('')
   const [loading, setLoading] = useState(true)
+  const [currentView, setCurrentView] = useState<'expenses' | 'claims'>('expenses')
 
   // Check if user is already authenticated
   useEffect(() => {
@@ -120,6 +129,16 @@ export default function Home() {
     setExpenses(expenses.filter(expense => expense.id !== id))
   }
 
+  const updateClaimStatus = (expenseId: string, status: Expense['claimStatus'], additionalData?: any) => {
+    setExpenses(expenses.map(expense => 
+      expense.id === expenseId ? { 
+        ...expense, 
+        claimStatus: status,
+        ...additionalData
+      } : expense
+    ))
+  }
+
   const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0)
   const currentMonth = new Date().getMonth()
   const currentYear = new Date().getFullYear()
@@ -155,19 +174,47 @@ export default function Home() {
           expenseCount={expenses.length}
         />
 
-        {/* Action Buttons */}
-        <div className="mb-8 flex gap-4">
-          <button
-            onClick={() => setShowForm(!showForm)}
-            className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <Plus size={20} />
-            Add Expense
-          </button>
+        {/* View Tabs */}
+        <div className="mb-8">
+          <div className="flex gap-1 bg-gray-100 p-1 rounded-lg inline-flex">
+            <button
+              onClick={() => setCurrentView('expenses')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                currentView === 'expenses'
+                  ? 'bg-white text-blue-600 shadow-sm'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Expenses
+            </button>
+            <button
+              onClick={() => setCurrentView('claims')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                currentView === 'claims'
+                  ? 'bg-white text-blue-600 shadow-sm'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Claims
+            </button>
+          </div>
         </div>
 
+        {/* Action Buttons */}
+        {currentView === 'expenses' && (
+          <div className="mb-8 flex gap-4">
+            <button
+              onClick={() => setShowForm(!showForm)}
+              className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <Plus size={20} />
+              Add Expense
+            </button>
+          </div>
+        )}
+
         {/* Expense Form */}
-        {(showForm || editingExpense) && (
+        {currentView === 'expenses' && (showForm || editingExpense) && (
           <div className="mb-8">
             <ExpenseForm
               expense={editingExpense}
@@ -180,22 +227,30 @@ export default function Home() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Expense List */}
-          <div className="lg:col-span-2">
-            <ExpenseList
-              expenses={expenses}
-              onEdit={setEditingExpense}
-              onDelete={deleteExpense}
-            />
-          </div>
+        {/* Content based on current view */}
+        {currentView === 'expenses' ? (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Expense List */}
+            <div className="lg:col-span-2">
+              <ExpenseList
+                expenses={expenses}
+                onEdit={setEditingExpense}
+                onDelete={deleteExpense}
+              />
+            </div>
 
-          {/* Charts */}
-          <div className="space-y-6">
-            <ExpenseChart expenses={expenses} />
-            <DataDebugger />
+            {/* Charts */}
+            <div className="space-y-6">
+              <ExpenseChart expenses={expenses} />
+              <DataDebugger />
+            </div>
           </div>
-        </div>
+        ) : (
+          <ClaimsManager
+            expenses={expenses}
+            onUpdateClaimStatus={updateClaimStatus}
+          />
+        )}
       </div>
     </SessionManager>
   )

@@ -1,6 +1,6 @@
 'use client'
 
-import { Edit2, Trash2 } from 'lucide-react'
+import { Edit2, Trash2, FileText, Clock, CheckCircle, XCircle, DollarSign } from 'lucide-react'
 import { Expense } from '@/app/page'
 
 interface ExpenseListProps {
@@ -15,6 +15,21 @@ export function ExpenseList({ expenses, onEdit, onDelete }: ExpenseListProps) {
       style: 'currency',
       currency: 'USD',
     }).format(amount)
+  }
+
+  const getClaimStatusConfig = (status?: Expense['claimStatus']) => {
+    if (!status) return null
+    
+    const configs = {
+      claimable: { label: 'Claimable', color: 'bg-gray-100 text-gray-800', icon: FileText },
+      submitted: { label: 'Submitted', color: 'bg-blue-100 text-blue-800', icon: Clock },
+      under_review: { label: 'Under Review', color: 'bg-yellow-100 text-yellow-800', icon: Clock },
+      approved: { label: 'Approved', color: 'bg-green-100 text-green-800', icon: CheckCircle },
+      paid: { label: 'Paid', color: 'bg-emerald-100 text-emerald-800', icon: DollarSign },
+      rejected: { label: 'Rejected', color: 'bg-red-100 text-red-800', icon: XCircle }
+    }
+    
+    return configs[status]
   }
 
   const formatDate = (dateString: string) => {
@@ -65,6 +80,19 @@ export function ExpenseList({ expenses, onEdit, onDelete }: ExpenseListProps) {
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(expense.category)}`}>
                     {expense.category}
                   </span>
+                  {expense.claimable && (() => {
+                    const claimConfig = getClaimStatusConfig(expense.claimStatus || 'claimable')
+                    if (claimConfig) {
+                      const ClaimIcon = claimConfig.icon
+                      return (
+                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${claimConfig.color}`}>
+                          <ClaimIcon size={10} className="mr-1" />
+                          {claimConfig.label}
+                        </span>
+                      )
+                    }
+                    return null
+                  })()}
                 </div>
                 <p className="text-sm text-gray-500">{formatDate(expense.date)}</p>
               </div>
