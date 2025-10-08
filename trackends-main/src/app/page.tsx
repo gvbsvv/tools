@@ -101,43 +101,70 @@ export default function Home() {
         </nav>
       </header>
 
-      {/* Hero Section */}
-      <section className="container mx-auto px-6 py-16 text-center">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-5xl font-bold text-gray-900 mb-6">
-            Free Expense Tracker, Task Reminders, Tutor Scheduler & 
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Productivity Tools </span>
-          </h2>
-          <p className="text-xl text-gray-600 mb-8">
-            Complete productivity suite with expense tracker, task reminders, tutor scheduler, budget planner, time tracker, note taking, and password manager. 
-            Free web and mobile apps to track spending, manage tasks, schedule tutoring sessions, and boost your productivity.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
-              href="#tools"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-lg hover:shadow-lg transition-all inline-flex items-center justify-center space-x-2"
-            >
-              <span>Explore Tools</span>
-              <ArrowRight size={20} />
-            </a>
-            <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
-              <div className="flex items-center space-x-1">
-                <Globe size={16} />
-                <span>Web</span>
+      {/* Hero Section with Tools */}
+      <section className="container mx-auto px-6 py-12">
+        <div className="grid lg:grid-cols-3 gap-12 items-start">
+          {/* Left Side - Available Tools */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-xl shadow-lg p-6 sticky top-6">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Available Tools</h3>
+              <p className="text-gray-600 text-sm mb-6">
+                Choose from our productivity suite. All tools are free and work on any device.
+              </p>
+              <div className="space-y-4">
+                {tools.map((tool, index) => (
+                  <a 
+                    key={index}
+                    href={tool.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group"
+                  >
+                    <div className={`bg-gradient-to-r ${tool.color} p-2 rounded-lg group-hover:scale-105 transition-transform`}>
+                      <tool.icon className="text-white" size={20} />
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">{tool.name}</div>
+                      <div className="text-xs text-gray-500">{tool.features[0]}</div>
+                    </div>
+                    <ArrowRight size={16} className="text-gray-400 group-hover:text-blue-600 transition-colors" />
+                  </a>
+                ))}
               </div>
-              <div className="flex items-center space-x-1">
-                <Smartphone size={16} />
-                <span>Mobile</span>
+            </div>
+          </div>
+
+          {/* Right Side - Hero Content */}
+          <div className="lg:col-span-2">
+            <div className="text-center lg:text-left">
+              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Personal Productivity Tools</span>
+              </h2>
+              <p className="text-xl text-gray-600 mb-8">
+                Complete productivity suite with expense tracker, task reminders, tutor scheduler, budget planner, time tracker, note taking, and password manager. 
+                Free web and mobile apps to track spending, manage tasks, schedule tutoring sessions, and boost your productivity.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
+                <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
+                  <div className="flex items-center space-x-1">
+                    <Globe size={16} />
+                    <span>Web</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Smartphone size={16} />
+                    <span>Mobile</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Tools Section */}
-      <section id="tools" className="container mx-auto px-6 py-16">
+      {/* Featured Tools Details */}
+      <section id="tools" className="container mx-auto px-6 py-16 bg-gray-50">
         <div className="text-center mb-12">
-          <h3 className="text-3xl font-bold text-gray-900 mb-4">Available Tools</h3>
+          <h3 className="text-3xl font-bold text-gray-900 mb-4">Tool Features</h3>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Each tool is designed with simplicity in mind. Access them on any device - your data stays private and secure.
           </p>
