@@ -53,7 +53,7 @@ export function ClassScheduler({
     rate: '',
     location: '',
     notes: '',
-    recurrencePattern: null as RecurrencePattern | null
+    recurrencePattern: undefined as RecurrencePattern | undefined
   })
 
   const resetForm = () => {
@@ -67,7 +67,7 @@ export function ClassScheduler({
       rate: '',
       location: '',
       notes: '',
-      recurrencePattern: null
+      recurrencePattern: undefined
     })
     setEditingClass(null)
     setShowForm(false)
@@ -84,7 +84,7 @@ export function ClassScheduler({
       rate: classItem.rate.toString(),
       location: classItem.location,
       notes: classItem.notes || '',
-      recurrencePattern: classItem.recurrencePattern || null
+      recurrencePattern: classItem.recurrencePattern || undefined
     })
     setEditingClass(classItem)
     setShowForm(true)
@@ -109,7 +109,7 @@ export function ClassScheduler({
       rate: parseFloat(formData.rate) || 0,
       location: formData.location,
       notes: formData.notes || undefined,
-      recurrencePattern: formData.type === 'recurring' ? formData.recurrencePattern : undefined,
+      recurrencePattern: formData.type === 'recurring' ? formData.recurrencePattern || undefined : undefined,
       paymentStatus: 'unpaid' as const
     }
 

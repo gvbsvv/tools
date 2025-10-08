@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Plus, Search, Edit, Trash2, User, Mail, Phone, GraduationCap, DollarSign } from 'lucide-react'
-import { Tutor } from '@/types'
+import { Tutor, TimeSlot } from '@/types'
 
 interface TutorManagerProps {
   tutors: Tutor[]
@@ -30,7 +30,7 @@ export function TutorManager({ tutors, onAddTutor, onUpdateTutor, onDeleteTutor 
     hourlyRate: '',
     bio: '',
     qualifications: [] as string[],
-    availability: [],
+    availability: [] as TimeSlot[],
     isActive: true
   })
 
@@ -43,7 +43,7 @@ export function TutorManager({ tutors, onAddTutor, onUpdateTutor, onDeleteTutor 
       hourlyRate: '',
       bio: '',
       qualifications: [],
-      availability: [],
+      availability: [] as TimeSlot[],
       isActive: true
     })
     setEditingTutor(null)

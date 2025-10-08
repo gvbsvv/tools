@@ -178,14 +178,42 @@ export default function Home() {
         return (
           <TutorManager
             tutors={tutors}
-            onTutorsChange={setTutors}
+            onAddTutor={(newTutor) => {
+              const tutor = {
+                ...newTutor,
+                id: Date.now().toString(),
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+              }
+              setTutors([...tutors, tutor])
+            }}
+            onUpdateTutor={(updatedTutor) => {
+              setTutors(tutors.map(t => t.id === updatedTutor.id ? { ...updatedTutor, updatedAt: new Date().toISOString() } : t))
+            }}
+            onDeleteTutor={(id) => {
+              setTutors(tutors.filter(t => t.id !== id))
+            }}
           />
         )
       case 'students':
         return (
           <StudentManager
             students={students}
-            onStudentsChange={setStudents}
+            onAddStudent={(newStudent) => {
+              const student = {
+                ...newStudent,
+                id: Date.now().toString(),
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+              }
+              setStudents([...students, student])
+            }}
+            onUpdateStudent={(updatedStudent) => {
+              setStudents(students.map(s => s.id === updatedStudent.id ? { ...updatedStudent, updatedAt: new Date().toISOString() } : s))
+            }}
+            onDeleteStudent={(id) => {
+              setStudents(students.filter(s => s.id !== id))
+            }}
           />
         )
       case 'classes':
@@ -194,8 +222,27 @@ export default function Home() {
             tutors={tutors}
             students={students}
             classes={classes}
-            onClassesChange={setClasses}
-            onPaymentsChange={setPayments}
+            onAddClass={(newClass) => {
+              const classData = {
+                ...newClass,
+                id: Date.now().toString(),
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+              }
+              setClasses([...classes, classData])
+            }}
+            onUpdateClass={(updatedClass) => {
+              setClasses(classes.map(c => c.id === updatedClass.id ? { ...updatedClass, updatedAt: new Date().toISOString() } : c))
+            }}
+            onDeleteClass={(id) => {
+              setClasses(classes.filter(c => c.id !== id))
+            }}
+            onRescheduleClass={(id, newDateTime) => {
+              setClasses(classes.map(c => c.id === id ? { ...c, scheduledDateTime: newDateTime, status: 'rescheduled', updatedAt: new Date().toISOString() } : c))
+            }}
+            onCancelClass={(id, reason) => {
+              setClasses(classes.map(c => c.id === id ? { ...c, status: 'cancelled', notes: reason ? `${c.notes || ''}\nCancelled: ${reason}` : c.notes, updatedAt: new Date().toISOString() } : c))
+            }}
           />
         )
       case 'payments':
@@ -205,16 +252,39 @@ export default function Home() {
             classes={classes}
             tutors={tutors}
             students={students}
-            onPaymentsChange={setPayments}
+            onAddPayment={(newPayment) => {
+              const payment = {
+                ...newPayment,
+                id: Date.now().toString(),
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+              }
+              setPayments([...payments, payment])
+            }}
+            onUpdatePayment={(updatedPayment) => {
+              setPayments(payments.map(p => p.id === updatedPayment.id ? { ...updatedPayment, updatedAt: new Date().toISOString() } : p))
+            }}
+            onDeletePayment={(id) => {
+              setPayments(payments.filter(p => p.id !== id))
+            }}
           />
         )
       case 'notifications':
         return (
           <NotificationCenter
             reminders={reminders}
-            settings={notificationSettings}
-            onRemindersChange={setReminders}
-            onSettingsChange={setNotificationSettings}
+            classes={classes}
+            payments={payments}
+            tutors={tutors}
+            students={students}
+            notificationSettings={notificationSettings}
+            onUpdateReminder={(updatedReminder) => {
+              setReminders(reminders.map(r => r.id === updatedReminder.id ? { ...updatedReminder, updatedAt: new Date().toISOString() } : r))
+            }}
+            onDeleteReminder={(id) => {
+              setReminders(reminders.filter(r => r.id !== id))
+            }}
+            onUpdateNotificationSettings={setNotificationSettings}
           />
         )
       default:
