@@ -1,5 +1,5 @@
 import { format, parseISO, addMinutes, startOfWeek, endOfWeek, addDays, isSameDay, isAfter, isBefore } from 'date-fns'
-import { Class, RecurrencePattern, TimeSlot } from '@/types'
+import { Session, RecurrencePattern, TimeSlot } from '@/types'
 
 export class DateTimeUtils {
   static formatDate(date: string | Date, formatString: string = 'MMM dd, yyyy'): string {
@@ -76,37 +76,37 @@ export class DateTimeUtils {
   }
 }
 
-export class ClassUtils {
-  static generateRecurringClasses(
-    baseClass: Partial<Class>,
+export class SessionUtils {
+  static generateRecurringSessiones(
+    baseSession: Partial<Session>,
     pattern: RecurrencePattern,
     endDate: string,
     startDate?: string
-  ): Partial<Class>[] {
-    const classes: Partial<Class>[] = []
-    const baseDateTime = parseISO(startDate || baseClass.scheduledDateTime!)
+  ): Partial<Session>[] {
+    const Sessiones: Partial<Session>[] = []
+    const baseDateTime = parseISO(startDate || baseSession.scheduledDateTime!)
     let currentDate = new Date(baseDateTime)
     const end = parseISO(endDate)
 
     while (isBefore(currentDate, end) || isSameDay(currentDate, end)) {
-      // Create a new class instance
-      const newClass: Partial<Class> = {
-        ...baseClass,
-        id: `${baseClass.id}_${format(currentDate, 'yyyy-MM-dd')}`,
+      // Create a new Session instance
+      const newSession: Partial<Session> = {
+        ...baseSession,
+        id: `${baseSession.id}_${format(currentDate, 'yyyy-MM-dd')}`,
         scheduledDateTime: currentDate.toISOString(),
         type: 'recurring'
       }
 
-      classes.push(newClass)
+      Sessiones.push(newSession)
 
       // Calculate next occurrence
       currentDate = this.getNextOccurrence(currentDate, pattern)
       
       // Prevent infinite loops
-      if (classes.length > 365) break
+      if (Sessiones.length > 365) break
     }
 
-    return classes
+    return Sessiones
   }
 
   static getNextOccurrence(currentDate: Date, pattern: RecurrencePattern): Date {
@@ -129,31 +129,31 @@ export class ClassUtils {
     return nextDate
   }
 
-  static isClassUpcoming(scheduledDateTime: string): boolean {
+  static isSessionUpcoming(scheduledDateTime: string): boolean {
     return isAfter(parseISO(scheduledDateTime), new Date())
   }
 
-  static getClassDuration(scheduledDateTime: string, duration: number): string {
+  static getSessionDuration(scheduledDateTime: string, duration: number): string {
     const start = parseISO(scheduledDateTime)
     const end = addMinutes(start, duration)
     return `${DateTimeUtils.formatTime(start)} - ${DateTimeUtils.formatTime(end)}`
   }
 
-  static sortClassesByDate(classes: Class[]): Class[] {
-    return [...classes].sort((a, b) => 
+  static sortSessionesByDate(Sessiones: Session[]): Session[] {
+    return [...Sessiones].sort((a, b) => 
       new Date(a.scheduledDateTime).getTime() - new Date(b.scheduledDateTime).getTime()
     )
   }
 
-  static filterUpcomingClasses(classes: Class[]): Class[] {
-    return classes.filter(cls => this.isClassUpcoming(cls.scheduledDateTime))
+  static filterUpcomingSessiones(Sessiones: Session[]): Session[] {
+    return Sessiones.filter(cls => this.isSessionUpcoming(cls.scheduledDateTime))
   }
 
-  static filterClassesByDateRange(classes: Class[], startDate: Date, endDate: Date): Class[] {
-    return classes.filter(cls => {
-      const classDate = parseISO(cls.scheduledDateTime)
-      return (isAfter(classDate, startDate) || isSameDay(classDate, startDate)) &&
-             (isBefore(classDate, endDate) || isSameDay(classDate, endDate))
+  static filterSessionesByDateRange(Sessiones: Session[], startDate: Date, endDate: Date): Session[] {
+    return Sessiones.filter(cls => {
+      const SessionDate = parseISO(cls.scheduledDateTime)
+      return (isAfter(SessionDate, startDate) || isSameDay(SessionDate, startDate)) &&
+             (isBefore(SessionDate, endDate) || isSameDay(SessionDate, endDate))
     })
   }
 }

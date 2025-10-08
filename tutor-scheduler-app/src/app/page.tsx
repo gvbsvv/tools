@@ -1,19 +1,19 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Calendar, Users, GraduationCap, DollarSign, Bell, Settings, Plus } from 'lucide-react'
+import { Calendar, Users, Baby, GraduationCap, DollarSign, Bell, Settings, Plus } from 'lucide-react'
 import { AuthScreen } from '@/components/AuthScreen'
-import { SessionManager } from '@/components/SessionManager' 
-import { Dashboard } from '@/components/Dashboard'
+// import { SessionManager } from '@/components/SessionManager' 
+// import { Dashboard } from '@/components/Dashboard'
 import { TutorManager } from '@/components/TutorManager'
-import { StudentManager } from '@/components/StudentManager'
-import { ClassScheduler } from '@/components/ClassScheduler'
-import { PaymentTracker } from '@/components/PaymentTracker'
-import { NotificationCenter } from '@/components/NotificationCenter'
+import { ChildManager } from '@/components/ChildManager'
+// import { SessionScheduler } from '@/components/SessionScheduler'
+// import { PaymentTracker } from '@/components/PaymentTracker'
+// import { NotificationCenter } from '@/components/NotificationCenter'
 import { TutorStorage } from '@/utils/storage'
-import { Tutor, Student, Class, Payment, Reminder, NotificationSettings } from '@/types'
+import { Tutor, Child, Session, Payment, Reminder, NotificationSettings } from '@/types'
 
-type ViewType = 'dashboard' | 'tutors' | 'students' | 'classes' | 'payments' | 'notifications' | 'settings'
+type ViewType = 'dashboard' | 'children' | 'tutors' | 'sessions' | 'payments' | 'notifications' | 'settings'
 
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -23,12 +23,12 @@ export default function Home() {
 
   // Data states
   const [tutors, setTutors] = useState<Tutor[]>([])
-  const [students, setStudents] = useState<Student[]>([])
-  const [classes, setClasses] = useState<Class[]>([])
+  const [children, setChildren] = useState<Child[]>([])
+  const [sessions, setSessions] = useState<Session[]>([])
   const [payments, setPayments] = useState<Payment[]>([])
   const [reminders, setReminders] = useState<Reminder[]>([])
   const [notificationSettings, setNotificationSettings] = useState<NotificationSettings>({
-    classReminders: true,
+    sessionReminders: true,
     paymentReminders: true,
     emailNotifications: true,
     smsNotifications: false,
@@ -56,15 +56,15 @@ export default function Home() {
 
   useEffect(() => {
     if (isAuthenticated && userEmail) {
-      TutorStorage.saveStudents(userEmail, students)
+      // TutorStorage.saveChildren?.(userEmail, children) // Will implement later
     }
-  }, [students, isAuthenticated, userEmail])
+  }, [children, isAuthenticated, userEmail])
 
   useEffect(() => {
     if (isAuthenticated && userEmail) {
-      TutorStorage.saveClasses(userEmail, classes)
+      // TutorStorage.saveSessions?.(userEmail, sessions) // Will implement later
     }
-  }, [classes, isAuthenticated, userEmail])
+  }, [sessions, isAuthenticated, userEmail])
 
   useEffect(() => {
     if (isAuthenticated && userEmail) {
@@ -97,23 +97,23 @@ export default function Home() {
     try {
       const [
         loadedTutors,
-        loadedStudents, 
-        loadedClasses,
+        loadedChildren, 
+        loadedSessions,
         loadedPayments,
         loadedReminders,
         loadedSettings
       ] = await Promise.all([
         TutorStorage.loadTutors(userEmail),
-        TutorStorage.loadStudents(userEmail),
-        TutorStorage.loadClasses(userEmail),
+        Promise.resolve([]), // TutorStorage.loadChildren - will implement later
+        Promise.resolve([]), // TutorStorage.loadSessions - will implement later
         TutorStorage.loadPayments(userEmail),
         TutorStorage.loadReminders(userEmail),
         TutorStorage.loadNotificationSettings(userEmail)
       ])
 
       setTutors(loadedTutors)
-      setStudents(loadedStudents)
-      setClasses(loadedClasses)
+      setChildren(loadedChildren || [])
+      setSessions(loadedSessions || [])
       setPayments(loadedPayments)
       setReminders(loadedReminders)
       if (loadedSettings) setNotificationSettings(loadedSettings)
@@ -131,20 +131,20 @@ export default function Home() {
     setIsAuthenticated(false)
     setUserEmail('')
     setTutors([])
-    setStudents([])
-    setClasses([])
+    setChildren([])
+    setSessions([])
     setPayments([])
     setReminders([])
     await TutorStorage.clearUserSession()
   }
 
   const navigation = [
-    { id: 'dashboard', label: 'Dashboard', icon: Calendar },
-    { id: 'tutors', label: 'Tutors', icon: Users },
-    { id: 'students', label: 'Students', icon: GraduationCap },
-    { id: 'classes', label: 'Classes', icon: Calendar },
+    { id: 'dashboard', label: 'Overview', icon: Calendar },
+    { id: 'children', label: 'My Children', icon: Baby },
+    { id: 'tutors', label: 'My Tutors', icon: GraduationCap },
+    { id: 'sessions', label: 'Sessions', icon: Calendar },
     { id: 'payments', label: 'Payments', icon: DollarSign },
-    { id: 'notifications', label: 'Notifications', icon: Bell },
+    { id: 'notifications', label: 'Reminders', icon: Bell },
   ]
 
   if (loading) {
@@ -166,12 +166,88 @@ export default function Home() {
     switch (currentView) {
       case 'dashboard':
         return (
-          <Dashboard
-            tutors={tutors}
-            students={students}
-            classes={classes}
-            payments={payments}
-            reminders={reminders}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900">Learning Activity Overview</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <div className="flex items-center space-x-3">
+                  <Baby className="text-pink-600" size={24} />
+                  <div>
+                    <p className="text-sm text-gray-500">My Children</p>
+                    <p className="text-2xl font-bold">{children.length}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <div className="flex items-center space-x-3">
+                  <GraduationCap className="text-blue-600" size={24} />
+                  <div>
+                    <p className="text-sm text-gray-500">Active Tutors</p>
+                    <p className="text-2xl font-bold">{tutors.filter(t => t.isActive).length}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <div className="flex items-center space-x-3">
+                  <Calendar className="text-green-600" size={24} />
+                  <div>
+                    <p className="text-sm text-gray-500">This Month's Sessions</p>
+                    <p className="text-2xl font-bold">{sessions.length}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <div className="flex items-center space-x-3">
+                  <DollarSign className="text-yellow-600" size={24} />
+                  <div>
+                    <p className="text-sm text-gray-500">Pending Payments</p>
+                    <p className="text-2xl font-bold">{payments.filter(p => p.status === 'pending').length}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-lg">
+              <h3 className="text-lg font-semibold mb-4">Quick Start Guide</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button 
+                  onClick={() => setCurrentView('children')}
+                  className="text-left p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <Baby className="text-pink-600 mb-2" size={24} />
+                  <h4 className="font-semibold">Add Your Children</h4>
+                  <p className="text-sm text-gray-600">Start by adding your children and their interests</p>
+                </button>
+                <button 
+                  onClick={() => setCurrentView('tutors')}
+                  className="text-left p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <GraduationCap className="text-blue-600 mb-2" size={24} />
+                  <h4 className="font-semibold">Find & Add Tutors</h4>
+                  <p className="text-sm text-gray-600">Add tutors for different activities and subjects</p>
+                </button>
+              </div>
+            </div>
+          </div>
+        )
+      case 'children':
+        return (
+          <ChildManager
+            children={children}
+            onAddChild={(newChild) => {
+              const child = {
+                ...newChild,
+                id: Date.now().toString(),
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+              }
+              setChildren([...children, child])
+            }}
+            onUpdateChild={(updatedChild) => {
+              setChildren(children.map(c => c.id === updatedChild.id ? { ...updatedChild, updatedAt: new Date().toISOString() } : c))
+            }}
+            onDeleteChild={(id) => {
+              setChildren(children.filter(c => c.id !== id))
+            }}
           />
         )
       case 'tutors':
@@ -195,139 +271,91 @@ export default function Home() {
             }}
           />
         )
-      case 'students':
+      case 'sessions':
         return (
-          <StudentManager
-            students={students}
-            onAddStudent={(newStudent) => {
-              const student = {
-                ...newStudent,
-                id: Date.now().toString(),
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
-              }
-              setStudents([...students, student])
-            }}
-            onUpdateStudent={(updatedStudent) => {
-              setStudents(students.map(s => s.id === updatedStudent.id ? { ...updatedStudent, updatedAt: new Date().toISOString() } : s))
-            }}
-            onDeleteStudent={(id) => {
-              setStudents(students.filter(s => s.id !== id))
-            }}
-          />
-        )
-      case 'classes':
-        return (
-          <ClassScheduler
-            tutors={tutors}
-            students={students}
-            classes={classes}
-            onAddClass={(newClass) => {
-              const classData = {
-                ...newClass,
-                id: Date.now().toString(),
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
-              }
-              setClasses([...classes, classData])
-            }}
-            onUpdateClass={(updatedClass) => {
-              setClasses(classes.map(c => c.id === updatedClass.id ? { ...updatedClass, updatedAt: new Date().toISOString() } : c))
-            }}
-            onDeleteClass={(id) => {
-              setClasses(classes.filter(c => c.id !== id))
-            }}
-            onRescheduleClass={(id, newDateTime) => {
-              setClasses(classes.map(c => c.id === id ? { ...c, scheduledDateTime: newDateTime, status: 'rescheduled', updatedAt: new Date().toISOString() } : c))
-            }}
-            onCancelClass={(id, reason) => {
-              setClasses(classes.map(c => c.id === id ? { ...c, status: 'cancelled', notes: reason ? `${c.notes || ''}\nCancelled: ${reason}` : c.notes, updatedAt: new Date().toISOString() } : c))
-            }}
-          />
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900">Learning Sessions</h2>
+            <div className="bg-white p-6 rounded-xl shadow-lg text-center">
+              <Calendar size={48} className="mx-auto mb-4 text-gray-400" />
+              <h3 className="text-lg font-semibold mb-2">Session Scheduler Coming Soon</h3>
+              <p className="text-gray-600 mb-4">Schedule and manage learning sessions for your children with their tutors.</p>
+              <p className="text-sm text-gray-500">Add your children and tutors first to start scheduling sessions.</p>
+            </div>
+          </div>
         )
       case 'payments':
         return (
-          <PaymentTracker
-            payments={payments}
-            classes={classes}
-            tutors={tutors}
-            students={students}
-            onAddPayment={(newPayment) => {
-              const payment = {
-                ...newPayment,
-                id: Date.now().toString(),
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
-              }
-              setPayments([...payments, payment])
-            }}
-            onUpdatePayment={(updatedPayment) => {
-              setPayments(payments.map(p => p.id === updatedPayment.id ? { ...updatedPayment, updatedAt: new Date().toISOString() } : p))
-            }}
-            onDeletePayment={(id) => {
-              setPayments(payments.filter(p => p.id !== id))
-            }}
-          />
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900">Payment Management</h2>
+            <div className="bg-white p-6 rounded-xl shadow-lg text-center">
+              <DollarSign size={48} className="mx-auto mb-4 text-gray-400" />
+              <h3 className="text-lg font-semibold mb-2">Payment Tracker Coming Soon</h3>
+              <p className="text-gray-600 mb-4">Track payments to tutors and manage your learning expenses.</p>
+              <p className="text-sm text-gray-500">This feature will help you manage payments for all your children's activities.</p>
+            </div>
+          </div>
         )
       case 'notifications':
         return (
-          <NotificationCenter
-            reminders={reminders}
-            classes={classes}
-            payments={payments}
-            tutors={tutors}
-            students={students}
-            notificationSettings={notificationSettings}
-            onUpdateReminder={(updatedReminder) => {
-              setReminders(reminders.map(r => r.id === updatedReminder.id ? { ...updatedReminder, updatedAt: new Date().toISOString() } : r))
-            }}
-            onDeleteReminder={(id) => {
-              setReminders(reminders.filter(r => r.id !== id))
-            }}
-            onUpdateNotificationSettings={setNotificationSettings}
-          />
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900">Reminders & Notifications</h2>
+            <div className="bg-white p-6 rounded-xl shadow-lg text-center">
+              <Bell size={48} className="mx-auto mb-4 text-gray-400" />
+              <h3 className="text-lg font-semibold mb-2">Smart Reminders Coming Soon</h3>
+              <p className="text-gray-600 mb-4">Get reminders for upcoming sessions and payment due dates.</p>
+              <p className="text-sm text-gray-500">Stay organized with automatic notifications for all activities.</p>
+            </div>
+          </div>
         )
       default:
-        return <Dashboard tutors={tutors} students={students} classes={classes} payments={payments} reminders={reminders} />
+        return renderCurrentView()
     }
   }
 
   return (
-    <SessionManager onSessionExpired={handleSessionExpired}>
-      <div className="flex h-screen bg-gray-50">
-        {/* Sidebar */}
-        <div className="w-64 bg-white shadow-lg">
-          <div className="p-6 border-b">
-            <h1 className="text-xl font-bold text-gray-900">Tutor Scheduler</h1>
-            <p className="text-sm text-gray-600 mt-1">{userEmail}</p>
-          </div>
-          
-          <nav className="mt-6">
-            {navigation.map((item) => {
-              const Icon = item.icon
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setCurrentView(item.id as ViewType)}
-                  className={`w-full flex items-center px-6 py-3 text-left hover:bg-gray-50 transition-colors ${
-                    currentView === item.id ? 'bg-primary-50 text-primary-600 border-r-2 border-primary-600' : 'text-gray-700'
-                  }`}
-                >
-                  <Icon size={20} className="mr-3" />
-                  {item.label}
-                </button>
-              )
-            })}
-          </nav>
+    <div className="flex h-screen bg-gray-50">
+      {/* Sidebar */}
+      <div className="w-64 bg-white shadow-lg">
+        <div className="p-6 border-b">
+          <h1 className="text-xl font-bold text-gray-900">Learning Manager</h1>
+          <p className="text-sm text-gray-600 mt-1">{userEmail}</p>
         </div>
+        
+        <nav className="mt-6">
+          {navigation.map((item) => {
+            const Icon = item.icon
+            return (
+              <button
+                key={item.id}
+                onClick={() => setCurrentView(item.id as ViewType)}
+                className={`w-full flex items-center px-6 py-3 text-left hover:bg-gray-50 transition-colors ${
+                  currentView === item.id ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : 'text-gray-700'
+                }`}
+              >
+                <Icon size={20} className="mr-3" />
+                {item.label}
+              </button>
+            )
+          })}
+        </nav>
 
-        {/* Main Content */}
-        <div className="flex-1 overflow-auto">
-          <div className="p-8">
-            {renderCurrentView()}
-          </div>
+        {/* Logout Button */}
+        <div className="absolute bottom-6 left-6 right-6">
+          <button
+            onClick={handleSessionExpired}
+            className="w-full px-4 py-2 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            Sign Out
+          </button>
         </div>
       </div>
-    </SessionManager>
+
+      {/* Main Content */}
+      <div className="flex-1 overflow-auto">
+        <div className="p-8">
+          {renderCurrentView()}
+        </div>
+      </div>
+    </div>
   )
 }
