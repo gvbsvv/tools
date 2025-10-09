@@ -1,25 +1,26 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Calendar, Users, Baby, GraduationCap, DollarSign, Bell, Settings, Plus } from 'lucide-react'
+import { Calendar, Users, Baby, GraduationCap, DollarSign, Bell, Settings, Plus, BarChart, Clock } from 'lucide-react'
 import { AuthScreen } from '@/components/AuthScreen'
 // import { SessionManager } from '@/components/SessionManager' 
 // import { Dashboard } from '@/components/Dashboard'
 import { TutorManager } from '@/components/TutorManager'
 import { ChildManager } from '@/components/ChildManager'
-// import { SessionScheduler } from '@/components/SessionScheduler'
-// import { PaymentTracker } from '@/components/PaymentTracker'
+import { SessionScheduler } from '@/components/SessionScheduler'
+import { PaymentTracker } from '@/components/PaymentTracker'
+import { Dashboard } from '@/components/Dashboard'
 import { NotificationCenter } from '@/components/NotificationCenter'
 import { TutorStorage } from '@/utils/storage'
 import { Tutor, Child, Session, Payment, Reminder, NotificationSettings } from '@/types'
 
-type ViewType = 'dashboard' | 'children' | 'tutors' | 'sessions' | 'payments' | 'notifications' | 'settings'
+type ViewType = 'overview' | 'dashboard' | 'children' | 'tutors' | 'sessions' | 'payments' | 'notifications' | 'settings'
 
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [userEmail, setUserEmail] = useState('')
   const [loading, setLoading] = useState(true)
-  const [currentView, setCurrentView] = useState<ViewType>('dashboard')
+  const [currentView, setCurrentView] = useState<ViewType>('overview')
 
   // Data states
   const [tutors, setTutors] = useState<Tutor[]>([])
@@ -139,10 +140,11 @@ export default function Home() {
   }
 
   const navigation = [
-    { id: 'dashboard', label: 'Overview', icon: Calendar },
+    { id: 'overview', label: 'Overview', icon: Calendar },
+    { id: 'dashboard', label: 'Analytics', icon: BarChart },
     { id: 'children', label: 'My Children', icon: Baby },
     { id: 'tutors', label: 'My Tutors', icon: GraduationCap },
-    { id: 'sessions', label: 'Sessions', icon: Calendar },
+    { id: 'sessions', label: 'Sessions', icon: Clock },
     { id: 'payments', label: 'Payments', icon: DollarSign },
     { id: 'notifications', label: 'Reminders', icon: Bell },
   ]
@@ -164,7 +166,7 @@ export default function Home() {
 
   const renderCurrentView = () => {
     switch (currentView) {
-      case 'dashboard':
+      case 'overview':
         return (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold text-gray-900">Learning Activity Overview</h2>
@@ -273,27 +275,59 @@ export default function Home() {
         )
       case 'sessions':
         return (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900">Learning Sessions</h2>
-            <div className="bg-white p-6 rounded-xl shadow-lg text-center">
-              <Calendar size={48} className="mx-auto mb-4 text-gray-400" />
-              <h3 className="text-lg font-semibold mb-2">Session Scheduler Coming Soon</h3>
-              <p className="text-gray-600 mb-4">Schedule and manage learning sessions for your children with their tutors.</p>
-              <p className="text-sm text-gray-500">Add your children and tutors first to start scheduling sessions.</p>
-            </div>
-          </div>
+          <SessionScheduler
+            sessions={sessions}
+            tutors={tutors}
+            children={children}
+            onAddSession={(newSession) => {
+              const session = {
+                ...newSession,
+                id: Date.now().toString(),
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+              }
+              setSessions([...sessions, session])
+            }}
+            onUpdateSession={(updatedSession) => {
+              setSessions(sessions.map(s => s.id === updatedSession.id ? { ...updatedSession, updatedAt: new Date().toISOString() } : s))
+            }}
+            onDeleteSession={(id) => {
+              setSessions(sessions.filter(s => s.id !== id))
+            }}
+          />
         )
       case 'payments':
         return (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900">Payment Management</h2>
-            <div className="bg-white p-6 rounded-xl shadow-lg text-center">
-              <DollarSign size={48} className="mx-auto mb-4 text-gray-400" />
-              <h3 className="text-lg font-semibold mb-2">Payment Tracker Coming Soon</h3>
-              <p className="text-gray-600 mb-4">Track payments to tutors and manage your learning expenses.</p>
-              <p className="text-sm text-gray-500">This feature will help you manage payments for all your children's activities.</p>
-            </div>
-          </div>
+          <PaymentTracker
+            payments={payments}
+            sessions={sessions}
+            tutors={tutors}
+            children={children}
+            onAddPayment={(newPayment) => {
+              const payment = {
+                ...newPayment,
+                id: Date.now().toString(),
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+              }
+              setPayments([...payments, payment])
+            }}
+            onUpdatePayment={(updatedPayment) => {
+              setPayments(payments.map(p => p.id === updatedPayment.id ? { ...updatedPayment, updatedAt: new Date().toISOString() } : p))
+            }}
+            onDeletePayment={(id) => {
+              setPayments(payments.filter(p => p.id !== id))
+            }}
+          />
+        )
+      case 'dashboard':
+        return (
+          <Dashboard
+            sessions={sessions}
+            tutors={tutors}
+            children={children}
+            payments={payments}
+          />
         )
       case 'notifications':
         return (

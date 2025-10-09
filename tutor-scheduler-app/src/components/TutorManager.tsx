@@ -22,7 +22,7 @@ export function TutorManager({ tutors, onAddTutor, onUpdateTutor, onDeleteTutor 
     name: '',
     email: '',
     phone: '',
-    specialization: '',
+    specialization: [] as string[],
     hourlyRate: '',
     location: '',
     bio: '',
@@ -36,7 +36,7 @@ export function TutorManager({ tutors, onAddTutor, onUpdateTutor, onDeleteTutor 
       name: '',
       email: '',
       phone: '',
-      specialization: '',
+      specialization: [] as string[],
       hourlyRate: '',
       location: '',
       bio: '',
@@ -68,7 +68,7 @@ export function TutorManager({ tutors, onAddTutor, onUpdateTutor, onDeleteTutor 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!formData.name || !formData.specialization || !formData.hourlyRate || !formData.location) {
+    if (!formData.name || formData.specialization.length === 0 || !formData.hourlyRate || !formData.location) {
       alert('Please fill in all required fields')
       return
     }
@@ -98,7 +98,7 @@ export function TutorManager({ tutors, onAddTutor, onUpdateTutor, onDeleteTutor 
 
   const filteredTutors = tutors.filter(tutor =>
     tutor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    tutor.specialization.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    tutor.specialization.some(spec => spec.toLowerCase().includes(searchTerm.toLowerCase())) ||
     (tutor.email && tutor.email.toLowerCase().includes(searchTerm.toLowerCase()))
   )
 
@@ -171,23 +171,43 @@ export function TutorManager({ tutors, onAddTutor, onUpdateTutor, onDeleteTutor 
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Specialization *
+                    Specializations *
                   </label>
-                  <select
-                    value={formData.specialization}
-                    onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    required
-                  >
-                    <option value="">Select specialization</option>
+                  <div className="max-h-32 overflow-y-auto border border-gray-300 rounded-lg p-2">
                     {ACTIVITY_CATEGORIES.map(category => (
-                      <optgroup key={category.id} label={category.name}>
-                        {category.subcategories.map(activity => (
-                          <option key={activity} value={activity}>{activity}</option>
-                        ))}
-                      </optgroup>
+                      <div key={category.id} className="mb-2">
+                        <div className="font-medium text-gray-600 text-sm mb-1">{category.name}</div>
+                        <div className="grid grid-cols-2 gap-1">
+                          {category.subcategories.map(activity => (
+                            <label key={activity} className="flex items-center space-x-2 text-sm">
+                              <input
+                                type="checkbox"
+                                checked={formData.specialization.includes(activity)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setFormData({ 
+                                      ...formData, 
+                                      specialization: [...formData.specialization, activity] 
+                                    })
+                                  } else {
+                                    setFormData({ 
+                                      ...formData, 
+                                      specialization: formData.specialization.filter(s => s !== activity) 
+                                    })
+                                  }
+                                }}
+                                className="rounded text-blue-600 focus:ring-blue-500"
+                              />
+                              <span>{activity}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
                     ))}
-                  </select>
+                  </div>
+                  {formData.specialization.length === 0 && (
+                    <p className="text-red-500 text-xs mt-1">Please select at least one specialization</p>
+                  )}
                 </div>
 
                 <div>
@@ -360,7 +380,7 @@ export function TutorManager({ tutors, onAddTutor, onUpdateTutor, onDeleteTutor 
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-semibold text-gray-900">{tutor.name}</h3>
-                  <p className="text-lg text-blue-600 font-medium">{tutor.specialization}</p>
+                  <p className="text-lg text-blue-600 font-medium">{tutor.specialization.join(', ')}</p>
                   
                   <div className="flex items-center space-x-4 mt-2 text-sm text-gray-600">
                     {tutor.email && (

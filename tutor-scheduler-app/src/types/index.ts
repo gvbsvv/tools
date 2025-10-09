@@ -15,7 +15,7 @@ export interface Tutor {
   name: string
   email?: string
   phone?: string
-  specialization: string // e.g., "Piano", "Mathematics", "Karate", "Swimming"
+  specialization: string[] // e.g., ["Piano", "Keyboard"], ["Mathematics", "Science"], ["Karate", "Taekwondo"]
   hourlyRate: number
   location: string // "Online", "At home", "At tutor's place", "Studio/Center"
   bio?: string
@@ -94,8 +94,12 @@ export interface Session {
   scheduledDateTime: string // ISO string
   duration: number // minutes
   rate: number
+  hourlyRate: number // rate per hour for easier calculation
   location: string // "Online", "At home", "At tutor's place", etc.
+  sessionType: 'in-person' | 'online'
   notes?: string
+  tutorComments?: string
+  parentComments?: string
   
   // For recurring classes
   recurrencePattern?: RecurrencePattern
@@ -144,8 +148,10 @@ export interface Payment {
   amount: number
   dueDate: string
   paidDate?: string
-  method?: string // 'cash', 'card', 'transfer', 'upi', 'cheque', etc.
-  status: 'pending' | 'paid' | 'overdue' | 'cancelled'
+  paidAt?: string // when it was actually paid
+  paymentMethod?: string // 'cash', 'card', 'transfer', 'upi', 'cheque', etc.
+  method?: string // backward compatibility
+  status: 'pending' | 'paid' | 'overdue'
   notes?: string
   createdAt: string
   updatedAt: string
