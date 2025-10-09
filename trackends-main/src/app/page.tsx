@@ -141,8 +141,7 @@ export default function Home() {
                 <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Personal Productivity Tools</span>
               </h2>
               <p className="text-xl text-gray-600 mb-8">
-                Complete productivity suite with expense tracker, task reminders, tutor scheduler, budget planner, time tracker, note taking, and password manager. 
-                Free web and mobile apps to track spending, manage tasks, schedule tutoring sessions, and boost your productivity.
+                An integrated suite of free apps tailored for individuals to streamline and daily tasks. Manage expenses, Organize schedules, plan budgets, and so many personal tools on web and mobile- all designated to boost your personal efficiency.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
                 <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
