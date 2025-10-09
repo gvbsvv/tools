@@ -133,6 +133,7 @@ export interface Reminder {
   recipientEmail?: string
   recipientPhone?: string
   createdAt: string
+  updatedAt: string
 }
 
 export interface Payment {

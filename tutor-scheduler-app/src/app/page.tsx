@@ -9,7 +9,7 @@ import { TutorManager } from '@/components/TutorManager'
 import { ChildManager } from '@/components/ChildManager'
 // import { SessionScheduler } from '@/components/SessionScheduler'
 // import { PaymentTracker } from '@/components/PaymentTracker'
-// import { NotificationCenter } from '@/components/NotificationCenter'
+import { NotificationCenter } from '@/components/NotificationCenter'
 import { TutorStorage } from '@/utils/storage'
 import { Tutor, Child, Session, Payment, Reminder, NotificationSettings } from '@/types'
 
@@ -297,15 +297,32 @@ export default function Home() {
         )
       case 'notifications':
         return (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900">Reminders & Notifications</h2>
-            <div className="bg-white p-6 rounded-xl shadow-lg text-center">
-              <Bell size={48} className="mx-auto mb-4 text-gray-400" />
-              <h3 className="text-lg font-semibold mb-2">Smart Reminders Coming Soon</h3>
-              <p className="text-gray-600 mb-4">Get reminders for upcoming sessions and payment due dates.</p>
-              <p className="text-sm text-gray-500">Stay organized with automatic notifications for all activities.</p>
-            </div>
-          </div>
+          <NotificationCenter
+            sessions={sessions}
+            payments={payments}
+            reminders={reminders}
+            tutors={tutors}
+            children={children}
+            notificationSettings={notificationSettings}
+            onAddReminder={(newReminder) => {
+              const reminder = {
+                ...newReminder,
+                id: Date.now().toString(),
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+              }
+              setReminders([...reminders, reminder])
+            }}
+            onUpdateReminder={(updatedReminder) => {
+              setReminders(reminders.map(r => r.id === updatedReminder.id ? { ...updatedReminder, updatedAt: new Date().toISOString() } : r))
+            }}
+            onDeleteReminder={(id) => {
+              setReminders(reminders.filter(r => r.id !== id))
+            }}
+            onUpdateNotificationSettings={(settings) => {
+              setNotificationSettings(settings)
+            }}
+          />
         )
       default:
         return renderCurrentView()
