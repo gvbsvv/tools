@@ -143,6 +143,29 @@ export default function Home() {
               <p className="text-xl text-gray-600 mb-8">
                 An integrated suite of free apps tailored for individuals to streamline and daily tasks. Manage expenses, Organize schedules, plan budgets, and so many personal tools on web and mobile- all designated to boost your personal efficiency.
               </p>
+
+              {/* Data Security and Access Section */}
+              <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mb-8 rounded-r-lg">
+                <h3 className="text-lg font-semibold text-blue-900 mb-4">Data Security and Access</h3>
+                <p className="text-sm text-blue-800 mb-3">
+                  As of now, this service is only available as a web application.
+                </p>
+                <p className="text-sm text-blue-800 mb-4">
+                  We prioritize your privacy: we do not use a database to store your data. Instead, all information is encrypted and securely stored within a file on your device or in the application's local storage.
+                </p>
+                
+                <h4 className="text-md font-semibold text-blue-900 mb-2">Data Retrieval and Authentication</h4>
+                <p className="text-sm text-blue-800 mb-3">
+                  When using the app, you will be asked to create a "Memory Key" to retrieve your previously entered data. This key can be any string, email address, or word that you can easily remember.
+                </p>
+                <p className="text-sm text-blue-800 mb-3">
+                  Please note: This key is for authentication only. If you enter an email address, we will not send a one-time password (OTP) or any other verification email. The key you enter acts as your unique identifier to ensure that only you can access your data.
+                </p>
+                <p className="text-sm text-blue-800">
+                  If you have any questions, please feel free to send an email to <a href="mailto:gvbsvv@gmail.com" className="text-blue-600 hover:text-blue-800 underline">gvbsvv@gmail.com</a>.
+                </p>
+              </div>
+
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
                 <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
                   <div className="flex items-center space-x-1">
